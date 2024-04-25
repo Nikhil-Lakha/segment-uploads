@@ -50,20 +50,44 @@ def main():
         st.write("DataFrame:")
         st.write(df)
         
-        # Button to upload file to FTP
-        if st.button("Upload to FTP"):
+        # Generate .fin content (Placeholder for actual .fin file content)
+        fin_content = "Example .fin content"
+        
+        # Prepare files for upload
+        files = {
+            file_uploaded.name: df.to_csv(sep="\t", index=False, header=False),
+            file_uploaded.name.replace(".txt", ".fin"): fin_content
+        }
+        
+        # Button to upload .txt file to FTP
+        if st.button("Upload .txt to FTP"):
             try:
                 upload_to_ftp(
                     host="ftp3.omniture.com",
                     port=21,  # Change to the appropriate port number
                     login="vodacomdlsvodacomfinanci_7493522",
                     password="Bt0xTAlG",
-                    file_content=df.to_csv(sep="\t", index=False, header=False),
+                    file_content=files[file_uploaded.name],
                     file_name=file_uploaded.name
                 )
                 st.success("File uploaded successfully to FTP!")
             except Exception as e:
                 st.error(f"Error uploading file to FTP: {str(e)}")
+        
+        # Button to upload .fin file to FTP
+        if st.button("Upload .fin to FTP"):
+            try:
+                upload_to_ftp(
+                    host="ftp3.omniture.com",
+                    port=21,  # Change to the appropriate port number
+                    login="vodacomdlsvodacomfinanci_7493522",
+                    password="Bt0xTAlG",
+                    file_content=files[file_uploaded.name.replace(".txt", ".fin")],
+                    file_name=file_uploaded.name.replace(".txt", ".fin")
+                )
+                st.success(".fin file uploaded successfully to FTP!")
+            except Exception as e:
+                st.error(f"Error uploading .fin file to FTP: {str(e)}")
 
 if __name__ == "__main__":
     main()
