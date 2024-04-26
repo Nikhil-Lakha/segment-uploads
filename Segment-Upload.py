@@ -55,7 +55,7 @@ def main():
         
         # Prepare files for upload
         files = {
-            file_uploaded.name: df.to_csv(sep="\t", index=False, header=False, quoting=csv.QUOTE_NONE),
+            file_uploaded.name: df.to_csv(sep="\t", index=False, header=False),
             file_uploaded.name.replace(".txt", ".fin"): fin_content
         }
         
