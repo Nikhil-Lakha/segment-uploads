@@ -31,7 +31,7 @@ def main():
         df = pd.DataFrame(lines, columns=["## SC"])
         
         # Add additional text to the second column
-        df["SiteCatalyst SAINT Import File"] = additional_text
+        #df["SiteCatalyst SAINT Import File"] = additional_text
         df["v:2.1"] = ""
 
         # Insert "## SC" in the first three rows
@@ -42,6 +42,7 @@ def main():
         df.iloc[0, 1] = "'## SC' indicates a SiteCatalyst pre-process header. Please do not remove these lines."
         df.iloc[1, 1] = "D:2024-01-11 02:06:57"
         df.iloc[2, 1] = "Segment Name"
+        df.iloc[3, 1] = additional_text
         
         df.iloc[0, 2] = ""
         df.iloc[1, 2] = "A:0:0"
