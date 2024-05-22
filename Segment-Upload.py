@@ -56,7 +56,7 @@ def main():
         
         # Prepare files for upload
         output = io.StringIO()
-        df.to_csv(output, sep="\t", index=False, header=False, quoting=csv.QUOTE_NONE)
+        df.to_csv(output, sep="\t", index=False, header=False, quoting=csv.QUOTE_NONE, escapechar=",")
         txt_content = output.getvalue()
 
         files = {
