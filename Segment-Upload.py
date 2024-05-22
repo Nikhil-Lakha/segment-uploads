@@ -35,17 +35,17 @@ def main():
         df["v:2.1"] = ""
 
         # Insert "## SC" in the first three rows
-        df.iloc[0,0] = "## SC"
-        df.iloc[1,0] = "## SC"
-        df.iloc[2,0] = "Key"
+        df.iloc[0, 0] = "## SC"
+        df.iloc[1, 0] = "## SC"
+        df.iloc[2, 0] = "Key"
 
-        df.iloc[0,1] = "'## SC' indicates a SiteCatalyst pre-process header. Please do not remove these lines."
-        df.iloc[1,1] = "D:2024-01-11 02:06:57"
-        df.iloc[2,1] = "Segment Name"
+        df.iloc[0, 1] = "'## SC' indicates a SiteCatalyst pre-process header. Please do not remove these lines."
+        df.iloc[1, 1] = "D:2024-01-11 02:06:57"
+        df.iloc[2, 1] = "Segment Name"
         
-        df.iloc[0,2] = ""
-        df.iloc[1,2] = "A:0:0"
-        df.iloc[2,2] = ""
+        df.iloc[0, 2] = ""
+        df.iloc[1, 2] = "A:0:0"
+        df.iloc[2, 2] = ""
         
         # Show dataframe
         st.write("DataFrame:")
@@ -55,8 +55,12 @@ def main():
         fin_content = "Example .fin content"
         
         # Prepare files for upload
+        output = io.StringIO()
+        df.to_csv(output, sep="\t", index=False, header=False, quoting=csv.QUOTE_NONE)
+        txt_content = output.getvalue()
+
         files = {
-            file_uploaded.name: df.to_csv(sep="\t", index=False, header=False, quoting=csv.QUOTE_NONE, escapechar=" "),
+            file_uploaded.name: txt_content,
             file_uploaded.name.replace(".txt", ".fin"): fin_content
         }
         
