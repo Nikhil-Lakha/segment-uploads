@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from ftplib import FTP
 import io
+import csv
 
 # Function to upload file to FTP server
 def upload_to_ftp(host, port, login, password, file_content, file_name):
@@ -55,7 +56,7 @@ def main():
         
         # Prepare files for upload
         files = {
-            file_uploaded.name: df.to_csv(sep="\t", index=False, header=False),
+            file_uploaded.name: df.to_csv(sep="\t", index=False, header=False, quoting=csv.QUOTE_NONE, escapechar='\\'),
             file_uploaded.name.replace(".txt", ".fin"): fin_content
         }
         
@@ -88,6 +89,12 @@ def main():
                 st.success(".fin file uploaded successfully to FTP!")
             except Exception as e:
                 st.error(f"Error uploading .fin file to FTP: {str(e)}")
+        
+        # Download button for the uploaded file
+        if st.button("Download Uploaded File"):
+            with open(file_uploaded.name, 'w') as f:
+                f.write(text)
+            st.success("File downloaded successfully!")
 
 if __name__ == "__main__":
     main()
