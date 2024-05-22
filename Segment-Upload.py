@@ -26,7 +26,7 @@ def main():
         
         # Split text into lines
         lines = text.split("\n")
-        print(lines)
+        st.write(lines)
         
         # Create a dataframe from the lines
         df = pd.DataFrame(lines, columns=["## SC"])
