@@ -65,7 +65,7 @@ if uploaded_file is not None:
                 ftp.login(ftp_login, ftp_password)
                 
                 # Change to the appropriate directory
-                ftp.cwd("path/to/directory")
+                ftp.cwd("/")
                 
                 # Upload the file
                 with ftp.storlines("STOR dataframe.txt", open("dataframe.txt", "rb")) as f:
