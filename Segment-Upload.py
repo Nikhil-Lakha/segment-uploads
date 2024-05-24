@@ -21,6 +21,18 @@ ftp_port = 21
 ftp_login = "vodacomdlsvodacomfinanci_7493522"
 ftp_password = "Bt0xTAlG"
 
+def upload_to_ftp(content, filename):
+    """Uploads the given content as a file to the FTP server."""
+    try:
+        with FTP() as ftp:
+            ftp.connect(ftp_host, ftp_port)
+            ftp.login(ftp_login, ftp_password)
+            ftp.cwd("/")
+            ftp.storbinary(f"STOR {filename}", content)
+        st.success(f"File '{filename}' uploaded successfully!")
+    except Exception as e:
+        st.error(f"Error uploading file: {e}")
+
 if uploaded_file is not None:
     try:
         # Read the file into a DataFrame with tab delimiter
@@ -54,25 +66,20 @@ if uploaded_file is not None:
         st.write("DataFrame:")
         st.dataframe(final_df)
         
-        # Upload to FTP
-        if st.button("Upload DataFrame to FTP"):
+        # Upload .txt file to FTP
+        if st.button("Upload DataFrame as TXT to FTP"):
             # Convert DataFrame to tab-delimited .txt file
             csv = final_df.to_csv(sep='\t', index=False)
             file_content = BytesIO(csv.encode('utf-8'))
-
-            # Connect to FTP server
-            with FTP() as ftp:
-                ftp.connect(ftp_host, ftp_port)
-                ftp.login(ftp_login, ftp_password)
-                
-                # Change to the root directory
-                ftp.cwd("/")
-                
-                # Upload the file with the segment name as the filename
-                filename = f"{segment_name}.txt"
-                ftp.storbinary(f"STOR {filename}", file_content)
-                
-            st.success(f"File '{filename}' uploaded successfully!")
+            filename = f"{segment_name}.txt"
+            upload_to_ftp(file_content, filename)
+        
+        # Upload .fin file to FTP
+        if st.button("Upload .fin File to FTP"):
+            # Create an empty .fin file content
+            fin_content = BytesIO(b"")  # Assuming .fin file content is empty
+            filename = f"{segment_name}.fin"
+            upload_to_ftp(fin_content, filename)
         
     except Exception as e:
         st.error(f"Error: {e}")
