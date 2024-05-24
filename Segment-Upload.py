@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from ftplib import FTP
-from io import StringIO
+from io import BytesIO
 
 # Title of the Streamlit app
 st.title("Upload a TXT File and Display as DataFrame")
@@ -58,7 +58,7 @@ if uploaded_file is not None:
         if st.button("Upload DataFrame to FTP"):
             # Convert DataFrame to tab-delimited .txt file
             csv = final_df.to_csv(sep='\t', index=False)
-            file_content = StringIO(csv)
+            file_content = BytesIO(csv.encode('utf-8'))
 
             # Connect to FTP server
             with FTP() as ftp:
@@ -70,7 +70,7 @@ if uploaded_file is not None:
                 
                 # Upload the file with the segment name as the filename
                 filename = f"{segment_name}.txt"
-                ftp.storlines(f"STOR {filename}", file_content)
+                ftp.storbinary(f"STOR {filename}", file_content)
                 
             st.success(f"File '{filename}' uploaded successfully!")
         
